@@ -1,34 +1,34 @@
 {pkgs, lib, ...}:
 
 {  
-	nixpkgs = {
-		config.allowUnfree = true;
-	};
+  nixpkgs = {
+    config.allowUnfree = true;
+  };
 
-	nix.extraOptions = ''
-		auto-optimise-store = true
-		experimental-features = nix-command flakes
-		'' + lib.optionalString (pkgs.system == "aarch64-darwin") ''
-		extra-platforms = x86_64-darwin aarch64-darwin
-		'';
+  nix.extraOptions = ''
+    auto-optimise-store = true
+    experimental-features = nix-command flakes
+  '' + lib.optionalString (pkgs.system == "aarch64-darwin") ''
+    extra-platforms = x86_64-darwin aarch64-darwin
+  '';
 
-	services.nix-daemon.enable = true;
+  services.nix-daemon.enable = true;
 
-	programs.zsh.enable = true;
+  programs.zsh.enable = true;
 
-	security.pam.enableSudoTouchIdAuth = true;
+  security.pam.enableSudoTouchIdAuth = true;
 
-	homebrew = {
-		enable = true;
-		onActivation = {
-			autoUpdate = true;
-			upgrade = true;
-		};
+  homebrew = {
+    enable = true;
+    onActivation = {
+      autoUpdate = true;
+      upgrade = true;
+    };
 
-		brews = [
-		];
+    brews = [
+    ];
 
-		casks = [
+#    casks = [
 #      "cursor"
 #      "logseq"
 #      "raycast"
@@ -39,68 +39,74 @@
 #      "arc"
 #      "readdle-spark"
 #      "docker"
-		];
-	}; 
+#    ];
+  }; 
 
-	system.defaults = {
-		dock.autohide = true;
-	};
+  system.defaults = {
+    dock.autohide = true;
+  };
 
-	home-manager = {
-		useGlobalPkgs = true;
-		useUserPackages = true;
-		users.matt = {pkgs, config, ...}: {
-			home = {
-				stateVersion = "23.11";
-				username = lib.mkDefault "matt";
-				homeDirectory = lib.mkForce "/Users/matt";
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.matt = {pkgs, config, ...}: {
+      home = {
+        stateVersion = "23.11";
+        username = lib.mkDefault "matt";
+        homeDirectory = lib.mkForce "/Users/matt";
 
-				packages = with pkgs; [
-					_1password
+        packages = with pkgs; [
+          _1password
           docker
           oh-my-zsh
-				];
+        ];
 
-				sessionVariables = {
-					EDITOR = "vim";
-					SSH_AUTH_SOCK = "${config.home.homeDirectory}/.1password/agent.sock";
-				};
+        sessionVariables = {
+          EDITOR = "vim";
+          SSH_AUTH_SOCK = "${config.home.homeDirectory}/.1password/agent.sock";
+        };
 
-				file.".1password/agent.sock" = lib.mkIf pkgs.stdenv.isDarwin {
-					source = config.lib.file.mkOutOfStoreSymlink
-						"${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
-				};
-			};
+        file.".1password/agent.sock" = lib.mkIf pkgs.stdenv.isDarwin {
+          source = config.lib.file.mkOutOfStoreSymlink
+          "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+        };
+      };
 
-		programs.ssh = {
-			enable = true;
-			matchBlocks."*" = {
-				extraOptions = {
-					IdentityAgent = ''"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
-				};
-			};
-		};
+      programs.ssh = {
+        enable = true;
+        matchBlocks."*" = {
+          extraOptions = {
+            IdentityAgent = ''"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
+          };
+        };
+      };
 
-		programs.home-manager.enable = true;
-		programs.direnv.enable = true;
-		programs.direnv.nix-direnv.enable = true;
-		programs.zsh.enable = true;
+      programs.home-manager.enable = true;
+      programs.direnv.enable = true;
+      programs.direnv.nix-direnv.enable = true;
+      programs.zsh.enable = true;
 
-		programs.vim = {
-			enable = true;
-			settings = {
-				number = true;
-				tabstop = 2;
-				expandtab = true;
-				shiftwidth = 2;
-			};
-		};
-	};
+      programs.vim = {
+        enable = true;
+        settings = {
+          number = true;
+          tabstop = 2;
+          expandtab = true;
+          shiftwidth = 2;
+        };
+      };
 
-	# TODO: git (see https://github.com/zgagnon/conf-flake/blob/master/hosts/Zells-MacBook-Pro/default.nix#L148)
-	};
+    # TODO: git signing (see https://github.com/zgagnon/conf-flake/blob/master/hosts/Zells-MacBook-Pro/default.nix#L148)
+    programs.git = {
+      enable = true;
+      userName = "Matt Wynne";
+      userEmail = "matt.wynne@mechanical-orchard.com";
+    };
+  };
 
-	nix.settings = {
-		auto-optimise-store = true;
-	};
+};
+
+nix.settings = {
+  auto-optimise-store = true;
+};
 }
