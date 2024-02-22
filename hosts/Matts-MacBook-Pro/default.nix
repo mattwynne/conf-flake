@@ -58,7 +58,6 @@
         packages = with pkgs; [
           _1password
           docker
-          oh-my-zsh
         ];
 
         sessionVariables = {
@@ -84,7 +83,18 @@
       programs.home-manager.enable = true;
       programs.direnv.enable = true;
       programs.direnv.nix-direnv.enable = true;
-      programs.zsh.enable = true;
+      programs.zsh = {
+        enable = true;
+        syntaxHighlighting.enable = true;
+        oh-my-zsh = {
+          enable = true;
+          theme = "robbyrussell";
+          plugins = [
+            "git"
+            "docker"
+          ];
+        };
+      };
 
       programs.vim = {
         enable = true;
