@@ -79,6 +79,7 @@
           };
         };
       };
+      programs.gh.enable = true;
 
       programs.home-manager.enable = true;
       programs.direnv.enable = true;
