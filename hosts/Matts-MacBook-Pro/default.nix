@@ -58,6 +58,10 @@
         packages = with pkgs; [
           _1password
           docker
+          git-mit
+          mob
+          gh
+          tree
         ];
 
         sessionVariables = {
@@ -95,6 +99,11 @@
             "docker"
           ];
         };
+        initExtra = builtins.concatStringsSep "\n" [
+          "export EDITOR=vim"
+          "alias ls='ls -lahG'"
+          "alias p='cd ~/git && tree -L 2'"
+        ];
       };
 
       programs.vim = {
