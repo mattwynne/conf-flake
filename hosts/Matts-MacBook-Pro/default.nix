@@ -121,6 +121,9 @@
       enable = true;
       userName = "Matt Wynne";
       userEmail = "matt.wynne@mechanical-orchard.com";
+      aliases = {
+        co = "checkout";
+      };
     };
   };
 
