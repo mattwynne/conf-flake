@@ -62,6 +62,7 @@
           mob
           gh
           tree
+          glow
         ];
 
         sessionVariables = {
@@ -101,8 +102,11 @@
         };
         initExtra = builtins.concatStringsSep "\n" [
           "export EDITOR=vim"
+          "alias conf-flake-refresh='rm /Users/matt/.ssh/config && nix run nix-darwin -- switch --flake ~/.config/nix-darwin && source ~/.zshrc'"
           "alias ls='ls -lahG'"
           "alias p='cd ~/git && tree -L 2'"
+          "alias clean-branches='git for-each-ref --format=\"%(refname:short)\" refs/heads | grep -v main | xargs -L1 git branch -D'"
+          "alias clean-branches-remote='git for-each-ref --format=\"%(refname:short)\" refs/remotes | grep -v origin/main | xargs -L1 git branch -D --remote'"
         ];
       };
 
