@@ -1,17 +1,19 @@
-{pkgs, lib, ...}:
+{ pkgs, lib, ... }:
 
-{  
+{
   nixpkgs = {
     config.allowUnfree = true;
   };
 
   nix = {
-  extraOptions = ''
-    auto-optimise-store = true
-    experimental-features = nix-command flakes
-  '' + lib.optionalString (pkgs.system == "aarch64-darwin") ''
-    extra-platforms = x86_64-darwin aarch64-darwin
-  '';
+    linux-builder.enable = true;
+    settings.trusted-users = [ "@admin" "matt" ];
+    extraOptions = ''
+      auto-optimise-store = true
+      experimental-features = nix-command flakes
+    '' + lib.optionalString (pkgs.system == "aarch64-darwin") ''
+      extra-platforms = x86_64-darwin aarch64-darwin
+    '';
   };
 
   services.nix-daemon.enable = true;
@@ -30,19 +32,19 @@
     brews = [
     ];
 
-#    casks = [
-#      "cursor"
-#      "logseq"
-#      "raycast"
-#      "slack"
-#      "tuple"
-#      "tandem"
-#      "warp"
-#      "arc"
-#      "readdle-spark"
-#      "docker"
-#    ];
-  }; 
+    #    casks = [
+    #      "cursor"
+    #      "logseq"
+    #      "raycast"
+    #      "slack"
+    #      "tuple"
+    #      "tandem"
+    #      "warp"
+    #      "arc"
+    #      "readdle-spark"
+    #      "docker"
+    #    ];
+  };
 
   system.defaults = {
     dock.autohide = true;
@@ -51,7 +53,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.matt = {pkgs, config, ...}: {
+    users.matt = { pkgs, config, ... }: {
       home = {
         stateVersion = "23.11";
         username = lib.mkDefault "matt";
@@ -75,7 +77,7 @@
 
         file.".1password/agent.sock" = lib.mkIf pkgs.stdenv.isDarwin {
           source = config.lib.file.mkOutOfStoreSymlink
-          "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+            "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
         };
       };
 
@@ -105,7 +107,7 @@
         };
         initExtra = builtins.concatStringsSep "\n" [
           "export EDITOR=vim"
-          "alias conf-flake-refresh='rm /Users/matt/.ssh/config && nix run nix-darwin -- switch --flake ~/.config/nix-darwin && source ~/.zshrc'"
+          "alias conf-flake-refresh='rm /Users/matt/.ssh/config; nix run nix-darwin -- switch --flake ~/.config/nix-darwin && source ~/.zshrc'"
           "alias ls='ls -lahG'"
           "alias p='cd ~/git && tree -L 2'"
           "alias clean-branches='git for-each-ref --format=\"%(refname:short)\" refs/heads | grep -v main | xargs -L1 git branch -D'"
@@ -123,21 +125,21 @@
         };
       };
 
-    # TODO: git signing (see https://github.com/zgagnon/conf-flake/blob/master/hosts/Zells-MacBook-Pro/default.nix#L148)
-    programs.git = {
-      enable = true;
-      userName = "Matt Wynne";
-      userEmail = "matt.wynne@mechanical-orchard.com";
-      aliases = {
-        co = "checkout";
-        lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
+      # TODO: git signing (see https://github.com/zgagnon/conf-flake/blob/master/hosts/Zells-MacBook-Pro/default.nix#L148)
+      programs.git = {
+        enable = true;
+        userName = "Matt Wynne";
+        userEmail = "matt.wynne@mechanical-orchard.com";
+        aliases = {
+          co = "checkout";
+          lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
+        };
       };
     };
+
   };
 
-};
-
-nix.settings = {
-  auto-optimise-store = true;
-};
+  nix.settings = {
+    auto-optimise-store = true;
+  };
 }
