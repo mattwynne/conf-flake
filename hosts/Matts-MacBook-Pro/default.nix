@@ -5,12 +5,14 @@
     config.allowUnfree = true;
   };
 
-  nix.extraOptions = ''
+  nix = {
+  extraOptions = ''
     auto-optimise-store = true
     experimental-features = nix-command flakes
   '' + lib.optionalString (pkgs.system == "aarch64-darwin") ''
     extra-platforms = x86_64-darwin aarch64-darwin
   '';
+  };
 
   services.nix-daemon.enable = true;
 
@@ -56,6 +58,7 @@
         homeDirectory = lib.mkForce "/Users/matt";
 
         packages = with pkgs; [
+          nixpkgs-fmt
           _1password
           docker
           git-mit
@@ -127,6 +130,7 @@
       userEmail = "matt.wynne@mechanical-orchard.com";
       aliases = {
         co = "checkout";
+        lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
       };
     };
   };
