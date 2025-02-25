@@ -121,9 +121,6 @@
           "alias p='cd ~/git && tree -L 2'"
           "alias clean-branches='git for-each-ref --format=\"%(refname:short)\" refs/heads | grep -v main | xargs -L1 git branch -D'"
           "alias clean-branches-remote='git for-each-ref --format=\"%(refname:short)\" refs/remotes | grep -v origin/main | xargs -L1 git branch -D --remote'"
-          ''
-          ''
-          ". /opt/homebrew/opt/asdf/libexec/asdf.sh"
         ];
       };
 
@@ -158,3 +155,4 @@
     auto-optimise-store = true;
   };
 }
+
