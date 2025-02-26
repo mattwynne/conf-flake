@@ -81,11 +81,21 @@
         sessionVariables = {
           EDITOR = "vim";
           SSH_AUTH_SOCK = "${config.home.homeDirectory}/.1password/agent.sock";
+          PATH = "$HOME/.local/bin:$PATH";
         };
 
         file.".1password/agent.sock" = lib.mkIf pkgs.stdenv.isDarwin {
           source = config.lib.file.mkOutOfStoreSymlink
             "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+        };
+
+        file.".local/bin/conf-flake-refresh" = {
+          text = ''
+            rm /Users/matt/.ssh/config
+            nix run nix-darwin -- switch --flake ~/.config/nix-darwin --fallback
+            source ~/.zshrc
+          '';
+          executable = true;
         };
       };
 
