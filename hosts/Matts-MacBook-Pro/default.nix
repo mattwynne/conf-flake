@@ -39,18 +39,8 @@
 
     casks = [
       "orbstack"
+      #   #"carpeliam/brew/gitshorty"
     ];
-    #      "cursor"
-    #      "logseq"
-    #      "raycast"
-    #      "slack"
-    #      "tuple"
-    #      "tandem"
-    #      "warp"
-    #      "arc"
-    #      "readdle-spark"
-    #      "docker"
-    #    ];
   };
 
   system.defaults = {
@@ -68,7 +58,7 @@
 
         packages = with pkgs; [
           nixpkgs-fmt
-          _1password
+          _1password-cli
           docker
           mob
           gh
@@ -76,6 +66,7 @@
           glow
           diceware
           watchexec
+          google-cloud-sdk
         ];
 
         sessionVariables = {
@@ -91,9 +82,14 @@
 
         file.".local/bin/conf-flake-refresh" = {
           text = ''
-            rm /Users/matt/.ssh/config
+            if [ -f ~/.ssh.config ]; then
+              mv ~/.ssh/config ~/.ssh/config.bak
+            fi
             nix run nix-darwin -- switch --flake ~/.config/nix-darwin --fallback
-            source ~/.zshrc
+            echo
+            echo "Nix-Darwin configuration updated!"
+            echo "To apply changes in this shell, run:"
+            echo "  source ~/.zshrc"
           '';
           executable = true;
         };
@@ -111,6 +107,7 @@
 
       programs.home-manager.enable = true;
       programs.direnv.enable = true;
+      programs.direnv.enableZshIntegration = true;
       programs.direnv.nix-direnv.enable = true;
       programs.zsh = {
         enable = true;
@@ -123,7 +120,7 @@
             "docker"
           ];
         };
-        initExtra = builtins.readFile ./.zshrc-extras;
+        initContent = builtins.readFile ./.zshrc-extras;
       };
 
       programs.vim = {
