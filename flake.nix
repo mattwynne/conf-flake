@@ -7,17 +7,12 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, }:
     let
       configuration = { pkgs, ... }: {
         # List packages installed in system profile. To search by name, run:
         # $ nix-env -qaP | grep wget
-        environment.systemPackages =
-          [
-            pkgs.vim
-          ];
-
-        # nix.package = pkgs.nix;
+        environment.systemPackages = [ pkgs.vim pkgs.nixfmt-rfc-style ];
 
         # Necessary for using flakes on this system.
         nix.settings.experimental-features = "nix-command flakes";
@@ -36,8 +31,7 @@
         # The platform the configuration will be used on.
         nixpkgs.hostPlatform = "aarch64-darwin";
       };
-    in
-    {
+    in {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#Matts-MacBook-Pro
       darwinConfigurations."Matts-MacBook-Pro" = nix-darwin.lib.darwinSystem {
