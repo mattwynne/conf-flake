@@ -18,11 +18,15 @@
       upgrade = true;
     };
 
-    taps = [ "purplebooth/repo" ];
+    taps = [
+      "purplebooth/repo"
+      "derailed/k9s"
+    ];
 
     brews = [
       "PurpleBooth/repo/git-mit"
       "asdf"
+      "derailed/k9s/k9s"
     ];
 
     casks = [
@@ -38,8 +42,8 @@
     defaults = {
       dock.autohide = true;
       NSGlobalDomain = {
-        KeyRepeat = 1;
-        InitialKeyRepeat = 0;
+        KeyRepeat = 7;
+        InitialKeyRepeat = 5;
       };
       trackpad = {
         Clicking = true;
@@ -72,10 +76,10 @@
             mob
             gh
             tree
-            glow
             diceware
             watchexec
             google-cloud-sdk
+            rectangle
           ];
 
           sessionVariables = {
@@ -143,10 +147,12 @@
 
         # TODO: git signing (see https://github.com/zgagnon/conf-flake/blob/master/hosts/Zells-MacBook-Pro/default.nix#L148)
         programs.git = {
+          enable = true;
           extraConfig = {
             rerere.enabled = true;
+            push.autoSetupRemote = true;
+            init.defaultBranch = "main";
           };
-          enable = true;
           userName = "Matt Wynne";
           userEmail = "matt.wynne@mechanical-orchard.com";
           aliases = {
