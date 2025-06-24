@@ -38,6 +38,7 @@
 
   system = {
     activationScripts.postActivation.text = builtins.readFile ./post-activation.sh;
+    primaryUser = "mattwynne";
 
     defaults = {
       dock.autohide = true;
