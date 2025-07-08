@@ -43,8 +43,8 @@
     defaults = {
       dock.autohide = true;
       NSGlobalDomain = {
-        KeyRepeat = 7;
-        InitialKeyRepeat = 5;
+        KeyRepeat = 2;
+        InitialKeyRepeat = 15;
       };
       trackpad = {
         Clicking = true;
@@ -99,6 +99,7 @@
                 mv ~/.ssh/config ~/.ssh/config.bak
               fi
               sudo nix run nix-darwin -- switch --flake ~/.config/nix-darwin --fallback
+              /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
               echo
               echo "Nix-Darwin configuration updated!"
               echo "To apply changes in this shell, run:"
@@ -115,6 +116,10 @@
               IdentityAgent = ''"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
             };
           };
+        };
+        programs.atuin = {
+          enable = true;
+          enableZshIntegration = true;
         };
         # programs.gh.enable = true;
 
@@ -153,6 +158,7 @@
             rerere.enabled = true;
             push.autoSetupRemote = true;
             init.defaultBranch = "main";
+            pull.rebase = true;
           };
           userName = "Matt Wynne";
           userEmail = "matt.wynne@mechanical-orchard.com";
