@@ -81,12 +81,15 @@
             watchexec
             google-cloud-sdk
             rectangle
+            coder
+            nodejs
           ];
 
           sessionVariables = {
             EDITOR = "vim";
             SSH_AUTH_SOCK = "${config.home.homeDirectory}/.1password/agent.sock";
             PATH = "$HOME/.local/bin:$PATH";
+            CODER_SSH_FORWARD_AGENT=1;
           };
 
           file.".1password/agent.sock" = lib.mkIf pkgs.stdenv.isDarwin {
@@ -117,11 +120,8 @@
             };
           };
         };
-        programs.atuin = {
-          enable = true;
-          enableZshIntegration = true;
-        };
-        # programs.gh.enable = true;
+
+        programs.gh.enable = true;
 
         programs.home-manager.enable = true;
         programs.direnv.enable = true;
