@@ -20,17 +20,15 @@
 
     taps = [
       "purplebooth/repo"
-      "derailed/k9s"
     ];
 
     brews = [
       "PurpleBooth/repo/git-mit"
       "asdf"
-      "derailed/k9s/k9s"
     ];
 
     casks = [
-      "orbstack"
+      "docker-desktop"
       "ghostty"
       #   #"carpeliam/brew/gitshorty"
     ];
@@ -60,6 +58,7 @@
   };
 
   home-manager = {
+    backupFileExtension = "backup";
     useGlobalPkgs = true;
     useUserPackages = true;
     users.mattwynne =
@@ -73,7 +72,6 @@
           packages = with pkgs; [
             nixpkgs-fmt
             _1password-cli
-            docker
             mob
             gh
             tree
