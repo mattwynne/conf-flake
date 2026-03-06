@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, llm-agents, ... }:
 
 {
   nixpkgs = {
@@ -81,6 +81,7 @@
             rectangle
             coder
             nodejs
+            llm-agents.packages.${pkgs.system}.pi
           ];
 
           sessionVariables = {
