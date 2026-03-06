@@ -9,6 +9,7 @@
       url = "github:cpick/nix-rosetta-builder";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
   outputs =
@@ -18,6 +19,7 @@
       nixpkgs,
       home-manager,
       nix-rosetta-builder,
+      llm-agents,
     }:
     let
       configuration =
@@ -59,6 +61,7 @@
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#Matts-MacBook-Pro
       darwinConfigurations."Matts-MacBook-Pro" = nix-darwin.lib.darwinSystem {
+        specialArgs = { inherit llm-agents; };
         modules = [
           home-manager.darwinModules.home-manager
           ./hosts/Matts-MacBook-Pro/default.nix
