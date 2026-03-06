@@ -113,6 +113,7 @@
 
         programs.ssh = {
           enable = true;
+          enableDefaultConfig = false;
           matchBlocks."*" = {
             extraOptions = {
               IdentityAgent = ''"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
@@ -153,17 +154,17 @@
         # TODO: git signing (see https://github.com/zgagnon/conf-flake/blob/master/hosts/Zells-MacBook-Pro/default.nix#L148)
         programs.git = {
           enable = true;
-          extraConfig = {
+          settings = {
             rerere.enabled = true;
             push.autoSetupRemote = true;
             init.defaultBranch = "main";
             pull.rebase = true;
-          };
-          userName = "Matt Wynne";
-          userEmail = "matt.wynne@mechanical-orchard.com";
-          aliases = {
-            co = "checkout";
-            lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
+            user.name = "Matt Wynne";
+            user.email = "matt.wynne@mechanical-orchard.com";
+            alias = {
+              co = "checkout";
+              lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
+            };
           };
         };
 

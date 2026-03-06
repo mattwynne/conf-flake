@@ -29,7 +29,7 @@
           # $ nix-env -qaP | grep wget
           environment.systemPackages = with pkgs; [
             vim
-            nixfmt-rfc-style
+            nixfmt
             devenv
             cachix
           ];
