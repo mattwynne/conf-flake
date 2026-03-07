@@ -10,6 +10,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     llm-agents.url = "github:numtide/llm-agents.nix";
+    devenv.url = "github:cachix/devenv";
   };
 
   outputs =
@@ -20,6 +21,7 @@
       home-manager,
       nix-rosetta-builder,
       llm-agents,
+      devenv,
     }:
     let
       configuration =
@@ -30,7 +32,7 @@
           environment.systemPackages = with pkgs; [
             vim
             nixfmt
-            devenv
+            devenv.packages.aarch64-darwin.devenv
             cachix
           ];
 
