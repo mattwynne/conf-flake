@@ -100,12 +100,17 @@
               if [ -f ~/.ssh.config ]; then
                 mv ~/.ssh/config ~/.ssh/config.bak
               fi
-              sudo nix run nix-darwin -- switch --flake ~/.config/nix-darwin --fallback
-              /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-              echo
-              echo "Nix-Darwin configuration updated!"
-              echo "To apply changes in this shell, run:"
-              echo "  source ~/.zshrc"
+              if sudo nix run nix-darwin -- switch --flake ~/.config/nix-darwin --fallback; then
+                /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+                echo
+                echo "Nix-Darwin configuration updated!"
+                echo "To apply changes in this shell, run:"
+                echo "  source ~/.zshrc"
+              else
+                echo
+                echo "Nix-Darwin configuration failed! See errors above."
+                exit 1
+              fi
             '';
             executable = true;
           };
