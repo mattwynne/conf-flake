@@ -5,10 +5,6 @@
     home-manager.url = "github:nix-community/home-manager";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    nix-rosetta-builder = {
-      url = "github:cpick/nix-rosetta-builder";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -17,7 +13,6 @@
       nix-darwin,
       nixpkgs,
       home-manager,
-      nix-rosetta-builder,
     }:
     let
       configuration =
@@ -70,12 +65,6 @@
           home-manager.darwinModules.home-manager
           ./hosts/MattBook-Air/default.nix
           configuration
-          # Run switch once with the linux-builder enabled, then uncomment this
-          nix-rosetta-builder.darwinModules.default
-          {
-            # see available options in module.nix's `options.nix-rosetta-builder`
-            nix-rosetta-builder.onDemand = true;
-          }
         ];
       };
     };
