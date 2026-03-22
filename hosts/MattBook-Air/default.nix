@@ -6,31 +6,8 @@
   };
 
   nix = {
-    enable = true;
-    settings = {
-      trusted-users = [
-        "@admin"
-        "matt"
-      ];
-    };
-    linux-builder = {
-      enable = true;
-    };
-
-    #     ephemeral = true;
-    #     package = pkgs.darwin.linux-builder-x86_64;
-    #   };
+    enable = false;
   };
-
-  # Make both architectures available
-  # nix.settings.extra-platforms = ["i686-linux" "aarch64-darwin"];
-
-  # nix.linux-builder = {
-  #     boot.binfmt.emulatedSystems = [ "x86_64-linux" ];  # <-- Now it's inside config
-  #     nix.settings.extra-platforms = [ "x86_64-linux" "aarch64-linux" ];
-  #   };
-  # };
-  # ids.gids.nixbld = 350;
 
   security.pam.services.sudo_local.touchIdAuth = true;
 
@@ -39,6 +16,8 @@
     defaults = {
       dock.autohide = true;
     };
+      # Following line should allow us to avoid a logout/login cycle
+      # /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
   };
 
   environment.systemPackages = [
@@ -50,6 +29,7 @@
     onActivation = {
       autoUpdate = true;
       upgrade = true;
+      cleanup = "zap";
     };
 
     taps = [
@@ -80,12 +60,18 @@
 
           packages = with pkgs; [
             nixfmt-rfc-style
+	    direnv
+            nix-direnv
+            tree
+          ];
+
+          sessionPath = [
+            "$HOME/.local/bin"
           ];
 
           sessionVariables = {
             EDITOR = "vim";
             # SSH_AUTH_SOCK = "${config.home.homeDirectory}/.1password/agent.sock";
-            PATH = "$HOME/.local/bin:$PATH";
           };
 
           # file.".1password/agent.sock" = lib.mkIf pkgs.stdenv.isDarwin {
@@ -95,18 +81,24 @@
 
         };
 
-        programs.zsh = {
-          enable = true;
-          syntaxHighlighting.enable = true;
-          oh-my-zsh = {
+	programs = {
+	  direnv = {
+	    enable = true;
+	    enableBashIntegration = true; # see note on other shells below
+	    nix-direnv.enable = true;
+	  };
+          zsh = {
             enable = true;
-            theme = "robbyrussell";
-            plugins = [
-              "git"
-            ];
+            syntaxHighlighting.enable = true;
+            oh-my-zsh = {
+              enable = true;
+              theme = "robbyrussell";
+              plugins = [
+                "git"
+              ];
+            };
+            initContent = builtins.readFile ./.zshrc-extras;
           };
-          initContent = builtins.readFile ./.zshrc-extras;
-        };
 
         # programs.ssh = {
         # enable = true;
@@ -116,6 +108,7 @@
         #     };
         #   };
         # };
+	};
 
       };
   };
