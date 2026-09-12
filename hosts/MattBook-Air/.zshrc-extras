@@ -6,3 +6,4 @@ alias clean-branches-remote='git for-each-ref --format=\"%(refname:short)\" refs
 # Prefer globally installed Nix tools over version-manager shims.
 export PATH="$HOME/.nix-profile/bin:${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 [ -f ~/.local/zshrc ] && source ~/.local/zshrc
+compdef home-manager-reload=darwin-rebuild

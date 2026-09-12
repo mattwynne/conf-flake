@@ -64,6 +64,9 @@
 	    direnv
             nix-direnv
             tree
+            (writeShellScriptBin "home-manager-reload" ''
+              exec darwin-rebuild switch --flake ~/.config/nix-darwin "$@"
+            '')
           ];
 
           sessionPath = [
