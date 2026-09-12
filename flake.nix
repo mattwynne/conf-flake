@@ -5,6 +5,8 @@
     home-manager.url = "github:nix-community/home-manager";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    llm-agents.url = "github:numtide/llm-agents.nix";
+    devenv.url = "github:cachix/devenv";
   };
 
   outputs =
@@ -13,6 +15,8 @@
       nix-darwin,
       nixpkgs,
       home-manager,
+      llm-agents,
+      devenv,
     }:
     let
       configuration =
@@ -22,8 +26,8 @@
           # $ nix-env -qaP | grep wget
           environment.systemPackages = with pkgs; [
             vim
-            nixfmt-rfc-style
-            devenv
+            nixfmt
+            devenv.packages.aarch64-darwin.devenv
             cachix
           ];
 
@@ -54,6 +58,7 @@
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#Matts-MacBook-Pro
       darwinConfigurations."Matts-MacBook-Pro" = nix-darwin.lib.darwinSystem {
+        specialArgs = { inherit llm-agents; };
         modules = [
           home-manager.darwinModules.home-manager
           ./hosts/Matts-MacBook-Pro/default.nix
