@@ -75,7 +75,7 @@
 
           sessionVariables = {
             EDITOR = "vim";
-            # SSH_AUTH_SOCK = "${config.home.homeDirectory}/.1password/agent.sock";
+            SSH_AUTH_SOCK = "${config.home.homeDirectory}/.1password/agent.sock";
           };
 
           # file.".1password/agent.sock" = lib.mkIf pkgs.stdenv.isDarwin {
