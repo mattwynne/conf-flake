@@ -29,7 +29,8 @@
     onActivation = {
       autoUpdate = true;
       upgrade = true;
-      cleanup = "zap";
+      # Homebrew 6 no longer accepts the bundle --cleanup flag.
+      cleanup = "none";
     };
 
     taps = [
